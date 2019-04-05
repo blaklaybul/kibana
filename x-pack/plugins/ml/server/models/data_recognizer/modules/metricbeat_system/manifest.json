@@ -1,0 +1,37 @@
+{
+  "id": "metricbeat_system",
+  "title": "Metricbeat System",
+  "description": "Detect Anomalies in Metricbeat System Data - cpu, diskio, filesystem, memory",
+  "type": "Metricbeat data",
+  "logoFile": "logo.json",
+  "defaultIndexPattern": "metricbeat-*",
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "should": [
+              {"bool": {"filter": {"term": {"metricset.name": "diskio"}}}},
+              {"bool": {"filter": {"term": {"metricset.name": "cpu"}}}},
+              {"bool": {"filter": {"term": {"metricset.name": "memory"}}}},
+              {"bool": {"filter": {"term": {"metricset.name": "filesystem"}}}}
+              ]
+          }
+        }
+      ],
+      "filter": {"term": {"metricset.module": "system"}}
+    }
+  },
+  "jobs": [
+  ],
+  "datafeeds": [
+  ],
+  "kibana": {
+    "dashboard": [
+    ],
+    "search": [
+    ],
+    "visualization": [
+    ]
+  }
+}
