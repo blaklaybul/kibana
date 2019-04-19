@@ -7,24 +7,44 @@
   "defaultIndexPattern": "metricbeat-*",
   "query": {
     "bool": {
-      "must": [
-        {
-          "bool": {
-            "should": [
-              {"bool": {"filter": {"term": {"metricset.name": "diskio"}}}},
-              {"bool": {"filter": {"term": {"metricset.name": "cpu"}}}},
-              {"bool": {"filter": {"term": {"metricset.name": "memory"}}}},
-              {"bool": {"filter": {"term": {"metricset.name": "filesystem"}}}}
-              ]
-          }
-        }
-      ],
-      "filter": {"term": {"metricset.module": "system"}}
+      "should": [
+        {"bool": {"filter": {"term": {"metricset.name": "load"}}}},
+        {"bool": {"filter": {"term": {"metricset.name": "cpu"}}}},
+        {"bool": {"filter": {"term": {"metricset.name": "filesystem"}}}}
+        ],
+      "filter": {"term": {"event.module": "system"}}
     }
   },
   "jobs": [
+    {
+      "id": "max_disk_utilization",
+      "file": "max_disk_utilization.json"
+    },
+    {
+      "id": "metricbeat_outages",
+      "file": "metricbeat_outages.json"
+    },
+    {
+      "id": "high_mean_cpu_iowait",
+      "file": "high_mean_cpu_iowait.json"
+    }
   ],
   "datafeeds": [
+    {
+      "id": "datafeed-max_disk_utilization",
+      "file": "datafeed_max_disk_utilization.json",
+      "job_id": "max_disk_utilization"
+    },
+    {
+      "id": "datafeed-metricbeat_outages",
+      "file": "datafeed_metricbeat_outages.json",
+      "job_id": "metricbeat_outages"
+    },
+    {
+      "id": "datafeed-high_mean_cpu_iowait",
+      "file": "datafeed_high_mean_cpu_iowait.json",
+      "job_id": "high_mean_cpu_iowait"
+    }
   ],
   "kibana": {
     "dashboard": [
